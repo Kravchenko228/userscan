@@ -1,0 +1,64 @@
+# Build artifacts
+bin/
+obj/
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+logs/
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# IDE-specific files
+.vscode/
+.idea/
+.vs/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*.pid
+*.seed
+*.orig
+*.rej
+*.back
+
+# Dependency directories
+node_modules/
+wwwroot/lib/
+bower_components/
+
+# Secrets and configuration files
+appsettings*.json
+*.key
+
+# Generated files
+swagger/
+swagger-ui/
+coverage/
+
+# Database
+*.mdf
+*.ldf
+*.db
+
+# Runtime-generated files
+*.runtimeconfig.json
+*.runtimeconfig.dev.json
+
+# Environment variable files
+.env
+.env.*
