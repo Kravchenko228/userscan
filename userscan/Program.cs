@@ -6,10 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<UserContext>(opt => opt.UseInMemoryDatabase("UserList"));
 builder.Services.AddHttpClient();
 builder.Services.AddDbContext<ContactsDbContext>(options =>
     options.UseSqlite("Data Source=contacts.db"));
@@ -24,6 +23,9 @@ builder.Services.AddCors(options =>
 
 
 var app = builder.Build();
+var dbContext = app.Services.CreateScope().ServiceProvider.GetRequiredService<ContactsDbContext>();
+Console.WriteLine("Using DB file: " + dbContext.Database.GetDbConnection().DataSource);
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

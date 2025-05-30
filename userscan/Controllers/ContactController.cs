@@ -85,28 +85,41 @@ namespace UserScan.Controllers
         [HttpPost("random")]
         public async Task<IActionResult> AddRandomContacts()
         {
-            var response = await _httpClient.GetStringAsync("https://randomuser.me/api/?results=10");
-            var apiResponse = System.Text.Json.JsonSerializer.Deserialize<ApiResponse>(response);
-
-            if (apiResponse?.Results == null)
-                return BadRequest("Failed to fetch users");
-
-            var contacts = apiResponse.Results.Select(user => new Contact
+            try
             {
-                Name = $"{user.Name?.First} {user.Name?.Last}",
-                FullAddress = $"{user.Location?.Street?.Number} {user.Location?.Street?.Name}, {user.Location?.City}, {user.Location?.State}, {user.Location?.Country}",
-                Email = user.Email,
-                Phone = user.Phone,
-                Cell = user.Cell,
-                RegistrationDate = user.Registered.Date,
-                Age = user.Dob.Age,
-                ImageUrl = user.Picture?.Large
-            }).ToList();
+                var response = await _httpClient.GetStringAsync("https://randomuser.me/api/?results=10");
+                Console.WriteLine("=== RandomUser JSON Response ===");
+                Console.WriteLine(response);
 
-            _context.Contacts.AddRange(contacts);
-            await _context.SaveChangesAsync();
+                var apiResponse = System.Text.Json.JsonSerializer.Deserialize<ApiResponse>(
+    response,
+    new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+);
 
-            return Ok(contacts);
+                if (apiResponse?.Results == null)
+                    return BadRequest("Failed to fetch users");
+
+                var contacts = apiResponse.Results.Select(user => new Contact
+                {
+                    Name = $"{user.Name?.First} {user.Name?.Last}",
+                    FullAddress = $"{user.Location?.Street?.Number} {user.Location?.Street?.Name}, {user.Location?.City}, {user.Location?.State}, {user.Location?.Country}",
+                    Email = user.Email,
+                    Phone = user.Phone,
+                    Cell = user.Cell,
+                    RegistrationDate = user.Registered.Date,
+                    Age = user.Dob.Age,
+                    ImageUrl = user.Picture?.Large
+                }).ToList();
+
+                _context.Contacts.AddRange(contacts);
+                await _context.SaveChangesAsync();
+
+                return Ok(contacts);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
     }
 }

@@ -11,7 +11,7 @@ using userscan.Data;
 namespace userscan.Migrations
 {
     [DbContext(typeof(ContactsDbContext))]
-    [Migration("20250530075651_InitialCreate")]
+    [Migration("20250530102635_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
