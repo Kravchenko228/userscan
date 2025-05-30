@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace UserScan.Models;
+namespace userscan.Models;
 
 public class UserContext : DbContext
 {

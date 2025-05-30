@@ -1,6 +1,6 @@
 using System;
 
-namespace UserScan.Models
+namespace userscan.Models
 {
     public class ApiResponse
     {

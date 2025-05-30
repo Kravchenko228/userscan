@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using UserScan.Models;
+using userscan.Models;
+using userscan.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -11,6 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<UserContext>(opt => opt.UseInMemoryDatabase("UserList"));
 builder.Services.AddHttpClient();
+builder.Services.AddDbContext<ContactsDbContext>(options =>
+    options.UseSqlite("Data Source=contacts.db"));
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -22,7 +24,6 @@ builder.Services.AddCors(options =>
 
 
 var app = builder.Build();
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -31,7 +32,6 @@ if (app.Environment.IsDevelopment())
 
 
 
-//app.UseCors("AllowReactApp");
 
 
 app.UseHttpsRedirection();
