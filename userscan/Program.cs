@@ -49,5 +49,26 @@ app.UseStaticFiles();
 app.UseAuthorization();
 
 app.MapControllers();
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ContactsDbContext>();
+    db.Database.Migrate();
+
+    if (!db.Contacts.Any())
+    {
+        db.Contacts.Add(new Contact
+        {
+            Name = "John Doe",
+            Email = "john@example.com",
+            Phone = "1234567890",
+            Cell = "1234567890",
+            FullAddress = "123 Sample St.",
+            ImageUrl = "https://example.com/image.jpg"
+        });
+        db.SaveChanges();
+        Console.WriteLine("Seeded initial contact.");
+    }
+}
+
 
 app.Run();
