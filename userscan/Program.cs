@@ -10,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
+
 builder.Services.AddDbContext<ContactsDbContext>(options =>
     options.UseSqlite("Data Source=contacts.db"));
 builder.Services.AddCors(options =>
@@ -26,11 +27,12 @@ var app = builder.Build();
 var dbContext = app.Services.CreateScope().ServiceProvider.GetRequiredService<ContactsDbContext>();
 Console.WriteLine("Using DB file: " + dbContext.Database.GetDbConnection().DataSource);
 
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "userscan V1");
+    c.RoutePrefix = "swagger";
+});
 
 
 
